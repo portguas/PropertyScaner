@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">PropertyScaner</string>
+    <!-- main -->
+    <string name="main_title">XXX资产盘点</string>
+    <string name="main_begin">开始盘点</string>
+    <string name="main_history">历史盘点</string>
+    <!-- history -->
+    <string name="history_title">历史盘点</string>
+    <!-- property -->
+    <string name="property_title">开始盘点</string>
+    <string name="property_scan">扫描资产</string>
+    <string name="property_export">结束盘点生成excel</string>
+    <!-- property detail-->
+    <string name="propertydetail_title">资产详情</string>
+    <!-- property result-->
+    <string name="propertyresult_title">盘点结果</string>
 </resources>
