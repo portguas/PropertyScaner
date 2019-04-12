@@ -3,8 +3,16 @@ package com.cj.zz.propertyscaner;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class HistoryActivity extends AppCompatActivity {
+
+    private TextView beginTime;
+    private TextView endTime;
+    private TextView scanNumber;
+    private TextView scanStatus;
+    private TextView operation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +24,23 @@ public class HistoryActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        initViews();
+    }
+
+    private void initViews() {
+        beginTime = findViewById(R.id.history_beginTime);
+        endTime = findViewById(R.id.history_endTime);
+        scanNumber = findViewById(R.id.scanNumber);
+        scanStatus = findViewById(R.id.history_status);
+        operation = findViewById(R.id.history_Operation);
+
+        operation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

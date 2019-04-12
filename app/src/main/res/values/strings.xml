@@ -10,8 +10,10 @@
     <string name="property_title">开始盘点</string>
     <string name="property_scan">扫描资产</string>
     <string name="property_export">结束盘点生成excel</string>
+    <string name="property_desc">本次盘点开始于%1$s, 已经扫描%2$d个资产</string>
     <!-- property detail-->
     <string name="propertydetail_title">资产详情</string>
     <!-- property result-->
     <string name="propertyresult_title">盘点结果</string>
+
 </resources>
