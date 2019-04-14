@@ -13,17 +13,28 @@ import android.widget.Toast;
 import com.cj.zz.propertyscaner.HistoryActivity;
 import com.cj.zz.propertyscaner.PropertyDetailActivity;
 import com.cj.zz.propertyscaner.R;
+import com.cj.zz.propertyscaner.model.NewPropertyData;
 
 import java.util.List;
 
 public class PropertyAdapt  extends RecyclerView.Adapter<PropertyAdapt.PropertyHolder> {
 
-    List<String> list;
+    List<NewPropertyData> list;
     Context context;
 
-    public PropertyAdapt(Context context) {
+    public PropertyAdapt(Context context, List<NewPropertyData> list) {
         this.context = context;
-//        this.list = list;
+        this.list = list;
+    }
+
+    public void addData(NewPropertyData newPropertyCode) {
+        this.list.add(0, newPropertyCode);
+        notifyItemInserted(0);
+    }
+
+    public void setData(List<NewPropertyData> list) {
+        this.list = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -37,13 +48,15 @@ public class PropertyAdapt  extends RecyclerView.Adapter<PropertyAdapt.PropertyH
     @Override
     public void onBindViewHolder(@NonNull final PropertyHolder propertyHolder, int i) {
 
-        propertyHolder.view.setText("sd");
+        final NewPropertyData data = this.list.get(i);
+        propertyHolder.view.setText(data.getKey());
         propertyHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int pos = propertyHolder.getLayoutPosition();
-                Toast.makeText(v.getContext(), "sd", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(v.getContext(), "sd" + pos, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(v.getContext(), PropertyDetailActivity.class);
+                intent.putExtra("detail", data);
                 v.getContext().startActivity(intent);
 
             }
@@ -53,7 +66,7 @@ public class PropertyAdapt  extends RecyclerView.Adapter<PropertyAdapt.PropertyH
 
     @Override
     public int getItemCount() {
-        return 3;
+        return this.list.size();
     }
 
     class PropertyHolder extends RecyclerView.ViewHolder {

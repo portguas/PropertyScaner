@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cj.zz.propertyscaner.model.NewPropertyData;
 import com.cj.zz.propertyscaner.model.PropertyData;
 
 import java.util.ArrayList;
@@ -17,10 +18,8 @@ public class PropertyDetailActivity extends AppCompatActivity {
     private PropertyData data;
     private TextView propertyCode;
     private TextView propertyName;
-    private TextView propertyBrand;
-    private TextView propertyKeeper;
-    private TextView propertyManifNumber;
     private Button continueInverntory;
+    private NewPropertyData newPropertyData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +32,8 @@ public class PropertyDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        newPropertyData = (NewPropertyData) getIntent().getSerializableExtra("detail");
+
         initViews();
 
     }
@@ -40,9 +41,6 @@ public class PropertyDetailActivity extends AppCompatActivity {
     public void  initViews() {
         propertyCode = findViewById(R.id.propertyCode);
         propertyName = findViewById(R.id.propertyName);
-        propertyBrand = findViewById(R.id.propertyBrand);
-        propertyKeeper = findViewById(R.id.propertyKeeper);
-        propertyManifNumber = findViewById(R.id.propertyManifNumber);
 
         continueInverntory = findViewById(R.id.continueInventory);
         continueInverntory.setOnClickListener(new View.OnClickListener() {
@@ -52,11 +50,14 @@ public class PropertyDetailActivity extends AppCompatActivity {
             }
         });
 
-//        propertyCode.setText(data.getPropertyCode());
-//        propertyName.setText(data.getPropertyName());
-//        propertyBrand.setText(data.getPropertyBrand());
-//        propertyKeeper.setText(data.getPropertyKeeper());
-//        propertyManifNumber.setText(data.getManufNumber());
+        propertyCode.setText(newPropertyData.getKey());
+        String[] info = newPropertyData.getValue();
+        String allInfo = "";
+        for (String i : info) {
+            allInfo += i + "; \n";
+        }
+        propertyName.setText(allInfo);
+
     }
 
     @Override

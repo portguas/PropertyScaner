@@ -41,11 +41,12 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/propertyList"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inventory_desc"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnBegin;
     private Button btnHistory;
+    static boolean isinventoryFinished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

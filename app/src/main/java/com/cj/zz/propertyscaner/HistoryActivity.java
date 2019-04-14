@@ -2,17 +2,32 @@ package com.cj.zz.propertyscaner;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.cj.zz.propertyscaner.adapt.HistoryAdapter;
+import com.cj.zz.propertyscaner.adapt.PropertyAdapt;
+import com.cj.zz.propertyscaner.db.NewPropertyModel;
+import com.cj.zz.propertyscaner.db.NewPropertyModel_Table;
+import com.cj.zz.propertyscaner.db.PropertyStatus;
+import com.cj.zz.propertyscaner.db.PropertyStatus_Table;
+import com.cj.zz.propertyscaner.model.HistoryData;
+import com.cj.zz.propertyscaner.model.NewPropertyData;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class HistoryActivity extends AppCompatActivity {
 
-    private TextView beginTime;
-    private TextView endTime;
-    private TextView scanNumber;
-    private TextView scanStatus;
-    private TextView operation;
+    private List<HistoryData> historyData;
+    private HistoryAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +41,35 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
         initViews();
+
+        readHistoryData();
     }
 
     private void initViews() {
-        beginTime = findViewById(R.id.history_beginTime);
-        endTime = findViewById(R.id.history_endTime);
-        scanNumber = findViewById(R.id.scanNumber);
-        scanStatus = findViewById(R.id.history_status);
-        operation = findViewById(R.id.history_Operation);
 
-        operation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        historyData = new ArrayList<>();
 
-            }
-        });
+        recyclerView = findViewById(R.id.propertyHistory);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new HistoryAdapter(this, historyData);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void readHistoryData() {
+        List<PropertyStatus> status = SQLite.select().from(PropertyStatus.class).queryList();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        for (PropertyStatus statusData : status) {
+            List<NewPropertyModel> data = SQLite.select().from(NewPropertyModel.class).where(NewPropertyModel_Table.beginTime.eq(statusData.beginTime)).queryList();
+            HistoryData histData = new HistoryData();
+            String time = format.format(new Date(Long.valueOf(statusData.beginTime)));
+            histData.beginTime = time;
+            histData.scanNumber = String.valueOf(data.size());
+            histData.isFinished = statusData.isFinished;
+            historyData.add(histData);
+        }
+
+        adapter.notifyDataSetChanged();
     }
 
     @Override
