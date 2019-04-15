@@ -17,6 +17,7 @@ public class NewPropertyModel extends BaseModel implements Serializable {
     @Column
     public String propertyJson;
 
+    // 未处理的时间戳格式
     @Column
     public String beginTime;
 

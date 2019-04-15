@@ -156,10 +156,9 @@ public class PropertyActivity extends AppCompatActivity {
     private void goToExcel() {
         Intent intent = new Intent(this, PropertyResultActivity.class);
         intent.putExtra("data", (Serializable) propertyData);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-        String time = format.format(new Date(beginTime));
-        intent.putExtra("beginTime", time);
-        intent.putExtra("endTime", format.format(new Date(System.currentTimeMillis())));
+        intent.putExtra("beginTime", beginTime);
+        intent.putExtra("endTime", System.currentTimeMillis());
+        intent.putExtra("fromHistory", false);
         startActivity(intent);
     }
     @Override
@@ -186,7 +185,7 @@ public class PropertyActivity extends AppCompatActivity {
                 status.save();
                 propertyList.smoothScrollToPosition(0);
                 refreshDescription();
-                Toast.makeText(this, "scanned" + pdata.getKey(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "scanned" + pdata.getKey(), Toast.LENGTH_LONG).show();
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);

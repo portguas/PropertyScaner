@@ -8,5 +8,6 @@ public class HistoryData implements Serializable {
     public String scanNumber;
     public String operation;
     public boolean isFinished;
-
+    public Long beginTimeLongValue;
+    public Long endTimeLongValue;
 }
