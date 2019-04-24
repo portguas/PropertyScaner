@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cj.zz.propertyscaner.Util.ExcelUtil;
+import com.cj.zz.propertyscaner.Util.PreferencesUtils;
 import com.cj.zz.propertyscaner.adapt.PropertyAdapt;
 import com.cj.zz.propertyscaner.db.NewPropertyModel;
 import com.cj.zz.propertyscaner.db.NewPropertyModel_Table;
@@ -148,6 +149,7 @@ public class PropertyResultActivity extends AppCompatActivity {
     }
 
     private void saveToLocal() {
+        PreferencesUtils.putBoolean(this, "inventoring", true);
         String filePath =  Environment.getExternalStorageDirectory().getPath() + "/PropertyExcel";
         File file = new File(filePath);
         if (!file.exists()) {
@@ -175,8 +177,9 @@ public class PropertyResultActivity extends AppCompatActivity {
         String string = getResources().getString(R.string.result_desc1);
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         String time = format.format(new Date(currentInventoryTime));
-        resultDesc.setText(String.format(string, time, endTime, dataCount, savePath));
+        resultDesc.setText(String.format(string, time, format.format(endTime), dataCount, savePath));
 
+        PreferencesUtils.putBoolean(this, "inventoryBeing", false);
 
         SQLite.update(NewPropertyModel.class)
                 .set(NewPropertyModel_Table.endTime.eq(String.valueOf(endTime)))
@@ -200,10 +203,19 @@ public class PropertyResultActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                this.setResult(1002);
                 this.finish();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        this.setResult(1002);
+        this.finish();
     }
 
     @Override

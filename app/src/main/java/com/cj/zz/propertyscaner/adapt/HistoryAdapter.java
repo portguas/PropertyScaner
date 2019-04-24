@@ -1,5 +1,6 @@
 package com.cj.zz.propertyscaner.adapt;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -56,11 +57,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryH
                     intent.putExtra("endTime", curData.endTimeLongValue);
                     intent.putExtra("count", curData.scanNumber);
                     intent.putExtra("fromHistory", true);
+                    v.getContext().startActivity(intent);
                 } else {
                     intent.setClass(v.getContext(), PropertyActivity.class);
-
+                    v.getContext().startActivity(intent);
                 }
-                v.getContext().startActivity(intent);
+
             }
         });
     }

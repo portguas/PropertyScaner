@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cj.zz.propertyscaner.Util.PreferencesUtils;
 import com.cj.zz.propertyscaner.Util.Util;
 import com.cj.zz.propertyscaner.adapt.PropertyAdapt;
 import com.cj.zz.propertyscaner.db.NewPropertyModel;
@@ -34,6 +35,8 @@ import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import org.apache.log4j.chainsaw.Main;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -85,7 +88,7 @@ public class PropertyActivity extends AppCompatActivity {
                     propertyData.add(pdata);
                 }
                 beginTime = Long.valueOf(lastInventoryTime);
-                isFirstClick = false;
+                PreferencesUtils.putBoolean(this, "inventoring", true);
                 refreshDescription();
             }
         }
@@ -95,10 +98,17 @@ public class PropertyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void initViews() {
@@ -107,8 +117,12 @@ public class PropertyActivity extends AppCompatActivity {
         btnBeginScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFirstClick) {
+                if (!PreferencesUtils.getBoolean(v.getContext(), "inventoring")) {
                     beginTime = System.currentTimeMillis();
+                    currentTime = String.valueOf(beginTime);
+                    PreferencesUtils.putBoolean(v.getContext(), "inventoring", true);
+//                    PreferencesUtils.putLong(v.getContext(), "lastBeginTime", beginTime);
+                }else {
                     currentTime = String.valueOf(beginTime);
                 }
                 Activity activity = null;
@@ -159,36 +173,47 @@ public class PropertyActivity extends AppCompatActivity {
         intent.putExtra("beginTime", beginTime);
         intent.putExtra("endTime", System.currentTimeMillis());
         intent.putExtra("fromHistory", false);
-        startActivity(intent);
+        startActivityForResult(intent, 1001);
+//        startActivity(intent);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if ( result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            }else {
-                isFirstClick = false;
-                String jsonString = Util.decode(result.getContents());
-                Gson gson = new Gson();
-                NewPropertyData pdata = gson.fromJson(jsonString, NewPropertyData.class);
-                adapter.addData(pdata);
-                // 存储数据
-                NewPropertyModel model = new NewPropertyModel();
-                model.propertyJson = jsonString;
-                model.beginTime = currentTime;
-                model.save();
-                // 存储状态
+
+        if (resultCode == 1002 && requestCode == 1001) {
+            propertyData.clear();
+            adapter.notifyDataSetChanged();
+            inventoryDesc.setText("");
+        }else {
+            if (!PreferencesUtils.getBoolean(this, "inventoryBeing")) {
+                // 存储状态 一次盘点只有一个
                 PropertyStatus status = new PropertyStatus();
                 status.beginTime = currentTime;
                 status.isFinished = MainActivity.isinventoryFinished;
                 status.save();
-                propertyList.smoothScrollToPosition(0);
-                refreshDescription();
-//                Toast.makeText(this, "scanned" + pdata.getKey(), Toast.LENGTH_LONG).show();
+                PreferencesUtils.putBoolean(this, "inventoryBeing", true);
             }
-        }else {
-            super.onActivityResult(requestCode, resultCode, data);
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if ( result != null) {
+                if (result.getContents() == null) {
+                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                }else {
+                    String jsonString = Util.decode(result.getContents());
+                    Gson gson = new Gson();
+                    NewPropertyData pdata = gson.fromJson(jsonString, NewPropertyData.class);
+                    adapter.addData(pdata);
+                    // 存储数据
+                    NewPropertyModel model = new NewPropertyModel();
+                    model.propertyJson = jsonString;
+                    model.beginTime = currentTime;
+                    model.save();
+
+                    propertyList.smoothScrollToPosition(0);
+                    refreshDescription();
+//                Toast.makeText(this, "scanned" + pdata.getKey(), Toast.LENGTH_LONG).show();
+                }
+            }else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 

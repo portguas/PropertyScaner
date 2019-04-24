@@ -65,8 +65,14 @@ public class HistoryActivity extends AppCompatActivity {
             String time = format.format(new Date(Long.valueOf(statusData.beginTime)));
             histData.beginTime = time;
             if (data.size() > 0) {
-                histData.endTime = format.format(new Date(Long.valueOf(data.get(0).endTime)));
-                histData.endTimeLongValue = Long.valueOf(data.get(0).endTime);
+                if (data.get(0).endTime == null) {
+                    histData.endTime = "";
+                    histData.endTimeLongValue = 0l;
+                }else {
+                    histData.endTime = format.format(new Date(Long.valueOf(data.get(0).endTime)));
+                    histData.endTimeLongValue = Long.valueOf(data.get(0).endTime);
+                }
+
             }
             histData.scanNumber = String.valueOf(data.size());
             histData.isFinished = statusData.isFinished;

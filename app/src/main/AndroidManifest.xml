@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:launchMode="singleTask"
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,15 +29,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:launchMode="singleTask"
             android:name=".HistoryActivity"
             android:label="@string/history_title" />
         <activity
+            android:launchMode="singleTask"
             android:name=".PropertyActivity"
             android:label="@string/property_title" />
         <activity
+            android:launchMode="singleTask"
             android:name=".PropertyDetailActivity"
             android:label="@string/propertydetail_title" />
-        <activity android:name=".PropertyResultActivity"
+        <activity
+            android:launchMode="singleTask"
+            android:name=".PropertyResultActivity"
             android:label="@string/propertyresult_title"></activity>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
