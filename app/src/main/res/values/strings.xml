@@ -16,5 +16,5 @@
     <!-- property result-->
     <string name="propertyresult_title">盘点结果</string>
     <string name="result_desc">本次盘点开始于%1$s, 结束于%2$s, 共扫描了%3$d个资产</string>
-    <string name="result_desc1">本次盘点开始于%1$s, 结束于%2$s, 共扫描了%3$d个资产,excel文件保存在%4$s</string>
+    <string name="result_desc1">本次盘点开始于%1$s, \n结束于%2$s, \n共扫描了%3$d个资产, \nexcel文件保存在%4$s</string>
 </resources>

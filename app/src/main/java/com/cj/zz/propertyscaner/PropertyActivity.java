@@ -218,7 +218,7 @@ public class PropertyActivity extends AppCompatActivity {
     }
 
     private void refreshDescription() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String time = format.format(new Date(beginTime));
         String string = getResources().getString(R.string.property_desc);
         inventoryDesc.setVisibility(View.VISIBLE);

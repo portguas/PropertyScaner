@@ -91,13 +91,11 @@ public class PropertyResultActivity extends AppCompatActivity {
 
     private void readData() {
         Long beginTime = getIntent().getLongExtra("beginTime", 0);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String begin = format.format(new Date(beginTime));
 
         endTime = getIntent().getLongExtra("endTime", 0);
         String end = format.format(new Date(endTime));
-
-
 
         currentInventoryTime = beginTime;
         propertyData.clear();
@@ -149,7 +147,7 @@ public class PropertyResultActivity extends AppCompatActivity {
     }
 
     private void saveToLocal() {
-        PreferencesUtils.putBoolean(this, "inventoring", true);
+        PreferencesUtils.putBoolean(this, "inventoring", false);
         String filePath =  Environment.getExternalStorageDirectory().getPath() + "/PropertyExcel";
         File file = new File(filePath);
         if (!file.exists()) {
@@ -175,7 +173,7 @@ public class PropertyResultActivity extends AppCompatActivity {
         ExcelUtil.initExcel(filePath, sheetName, title);
         ExcelUtil.writeObjListToExcel(list, filePath, this);
         String string = getResources().getString(R.string.result_desc1);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String time = format.format(new Date(currentInventoryTime));
         resultDesc.setText(String.format(string, time, format.format(endTime), dataCount, savePath));
 

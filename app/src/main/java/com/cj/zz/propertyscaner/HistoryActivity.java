@@ -58,7 +58,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void readHistoryData() {
         List<PropertyStatus> status = SQLite.select().from(PropertyStatus.class).queryList();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         for (PropertyStatus statusData : status) {
             List<NewPropertyModel> data = SQLite.select().from(NewPropertyModel.class).where(NewPropertyModel_Table.beginTime.eq(statusData.beginTime)).queryList();
             HistoryData histData = new HistoryData();

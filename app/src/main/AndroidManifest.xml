@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:name=".MainActivity">
             <intent-filter>
@@ -29,18 +30,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:name=".HistoryActivity"
             android:label="@string/history_title" />
         <activity
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:name=".PropertyActivity"
             android:label="@string/property_title" />
         <activity
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:name=".PropertyDetailActivity"
             android:label="@string/propertydetail_title" />
         <activity
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:name=".PropertyResultActivity"
             android:label="@string/propertyresult_title"></activity>
