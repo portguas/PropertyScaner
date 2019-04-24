@@ -3,9 +3,9 @@ def dbflow_version = "4.2.1"
 android {
     signingConfigs {
         config {
-            keyAlias 'scanner'
+            keyAlias 'key0'
             keyPassword 'vicufjvv'
-            storeFile file('/Users/heyulong/Desktop/PropertyScanner.jks')
+            storeFile file('C:/Users/Administrator/Desktop/propertyscanner.jks')
             storePassword 'vicufjvv'
         }
     }

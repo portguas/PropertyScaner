@@ -147,6 +147,8 @@ public class PropertyResultActivity extends AppCompatActivity {
     }
 
     private void saveToLocal() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-ddHHmmss");
         PreferencesUtils.putBoolean(this, "inventoring", false);
         String filePath =  Environment.getExternalStorageDirectory().getPath() + "/PropertyExcel";
         File file = new File(filePath);
@@ -156,8 +158,8 @@ public class PropertyResultActivity extends AppCompatActivity {
                 Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
             }
         }
-        String excelFileName = "/" + currentInventoryTime + ".xls";
-
+        String excelFileName = "/" + format1.format(new Date(currentInventoryTime)) + "~" + format1.format(endTime) + ".xls";
+//        String excelFileName = "/" + currentInventoryTime + ".xls";
         String[] title = {"编码"};
         String sheetName = "PropertySheet";
 
@@ -170,12 +172,12 @@ public class PropertyResultActivity extends AppCompatActivity {
         filePath = filePath + excelFileName;
 
         String savePath = "/sdcard/PropertyExcel" + excelFileName;
-        ExcelUtil.initExcel(filePath, sheetName, title);
-        ExcelUtil.writeObjListToExcel(list, filePath, this);
         String string = getResources().getString(R.string.result_desc1);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String time = format.format(new Date(currentInventoryTime));
         resultDesc.setText(String.format(string, time, format.format(endTime), dataCount, savePath));
+
+        ExcelUtil.initExcel(filePath, sheetName, title);
+        ExcelUtil.writeObjListToExcel(list, filePath, this, time, format.format(endTime));
 
         PreferencesUtils.putBoolean(this, "inventoryBeing", false);
 

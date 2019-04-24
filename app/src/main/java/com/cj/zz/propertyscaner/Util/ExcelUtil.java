@@ -115,7 +115,7 @@ public class ExcelUtil {
      * @param <T>
      */
     @SuppressWarnings("unchecked")
-    public static <T> void writeObjListToExcel(List<T> objList, String fileName, Context c) {
+    public static <T> void writeObjListToExcel(List<T> objList, String fileName, Context c, String beginTime, String endTime) {
         if (objList != null && objList.size() > 0) {
             WritableWorkbook writebook = null;
             InputStream in = null;
@@ -143,6 +143,14 @@ public class ExcelUtil {
                             sheet.setColumnView(i, list.get(i).length() + 5);
                         }
                     }
+                    String desc = "盘点开始时间";
+                    sheet.addCell(new Label(3, 0, "盘点开始时间", arial10format));
+                    sheet.addCell(new Label(3, 1, "盘点结束时间", arial10format));
+                    sheet.addCell(new Label(4, 0, beginTime, arial12format));
+                    sheet.addCell(new Label(4, 1, endTime, arial12format));
+                    sheet.setColumnView(3, desc.length() + 8);
+                    sheet.setColumnView(4, desc.length() + 15);
+
                     //设置行高
                     sheet.setRowView(j + 1, 350);
                 }
